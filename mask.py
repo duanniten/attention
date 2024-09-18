@@ -45,7 +45,7 @@ def get_mask_token_index(mask_token_id, inputs):
     Return the index of the token with the specified `mask_token_id`, or
     `None` if not present in the `inputs`.
     """
-    inputs_ids = inputs['inputs_ids']
+    inputs_ids = inputs["input_ids"]
     mask_position = tf.where(tf.equal(inputs_ids, mask_token_id))
     
     if tf.size(mask_position) == 0:
@@ -78,12 +78,15 @@ def visualize_attentions(tokens, attentions):
     (starting count from 1).
     """
     # TODO: Update this function to produce diagrams for all layers and heads.
-    generate_diagram(
-        1,
-        1,
-        tokens,
-        attentions[0][0][0]
-    )
+
+    for i in range(len(attentions)):
+        for k in range(len(attentions[i][0])):
+            generate_diagram(
+                i + 1,
+                k + 1,
+                tokens,
+                attentions[i][0][k]
+            )
 
 
 def generate_diagram(layer_number, head_number, tokens, attention_weights):
